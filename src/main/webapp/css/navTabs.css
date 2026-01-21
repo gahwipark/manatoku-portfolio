@@ -1,0 +1,61 @@
+.tabs {
+  width: 100%;
+}
+
+.tabs .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                 
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.tabs .nav button {
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #d9dde6;
+  border-radius: 12px;
+  background: #ffffff;
+
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.08s ease;
+}
+
+.tabs .nav button:hover {
+  background: #f3f6ff;
+  border-color: #b9c7ff;
+}
+
+.tabs .nav button:active {
+  transform: scale(0.99);
+}
+
+.tabs .nav button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(76,125,255,0.18);
+  border-color: #4c7dff;
+}
+
+/* 선택 상태를 주고 싶을 때: JS에서 active 클래스를 붙이면 됨 */
+.tabs .nav button.active {
+  background: #dbe9ff;
+  border-color: #4c7dff;
+}
+
+@media (max-width: 420px) {
+  .tabs .nav {
+    padding: 8px;
+    gap: 6px;
+  }
+  .tabs .nav button {
+    padding: 11px 12px;
+    font-size: 13px;
+  }
+}

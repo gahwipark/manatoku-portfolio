@@ -1,0 +1,8 @@
+.info {
+justify-content: center;
+text-align: center;
+width: 100%;
+height : 5%;
+min-height : 80px;
+flex-grow: 1;
+}

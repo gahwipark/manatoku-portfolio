@@ -1,0 +1,75 @@
+.panel {
+	width: 100%;
+	justify-content: center;
+	text-align: center;
+	height : 80%
+}
+
+.chat-btn {
+	width: 100%;
+	padding: 12px 14px;
+	margin-bottom: 6px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	border: none;
+	border-radius: 10px;
+	background-color: #f5f6f8;
+	cursor: pointer;
+
+	font-size: 14px;
+	text-align: left;
+
+	transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.chat-btn:hover {
+	background-color: #e9ebef;
+}
+
+.chat-btn:active {
+	transform: scale(0.98);
+}
+
+/* 선택된 친구 */
+.chat-btn.active {
+	background-color: #dbe9ff;
+	font-weight: 600;
+}
+
+.chat-btn span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 이름 */
+.chat-btn .name {
+	width: 90px;
+	text-align: left;
+	color: #222;
+}
+
+.chat-btn .id {
+	width: 120px;
+	text-align: left;
+	color: gray;
+}
+
+
+/* 상태 */
+.chat-btn[data-stat="ONLINE"] .status {
+	width: 70px;
+	text-align: left;
+	font-size: 12px;
+	color: green;
+}
+
+.chat-btn[data-stat="OFFLINE"] .status {
+	width: 70px;
+	text-align: left;
+	font-size: 12px;
+	color: red;
+}
