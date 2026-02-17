@@ -1,18 +1,21 @@
 package com.manatoku.model;
 
-import java.util.Date;
+import org.apache.ibatis.type.Alias;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Alias("Member")
 public class Member {
 	private int ucode;
+	private String email;
 	private String id;
 	private String name;
 	private String icon;
 	private String pass;
 	private String birth;
-	private String email;
 	private String phone;
+
 	public int getUcode() {
-		
 		return ucode;
 	}
 	public void setUcode(int ucode) {

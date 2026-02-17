@@ -1,76 +1,178 @@
 @charset "UTF-8";
-#friend-list-container {
-    background: white;
-    border-radius: 8px; /* 둥근 정도 완화 */
-    border: 1px solid #e0e6e6;
-    padding: 5px 0; /* 좌우 패딩 제거, 위아래만 살짝 */
-    max-height: 350px;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    height: 380px;        /* 팝업창 전체 높이에 맞춰 적절히 조절하세요 */
-    overflow-x: hidden;   /* 가로 스크롤은 방지 */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Lucida Sans Unicode", sans-serif;
 }
 
-/* 개별 친구 항목 - 패딩을 줄여서 두께 조절 */
+body {
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* 배경 */
+.back-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+}
+
+/* 별 */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+            radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+            radial-gradient(1.5px 1.5px at 80px 120px, #fff, transparent),
+            radial-gradient(2px 2px at 150px 200px, #fff, transparent);
+    background-size: 250px 250px;
+    animation: starsMove 120s linear infinite;
+}
+
+/* 별똥별 */
+.shooting-stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shooting-star {
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 15px white;
+    transform: rotate(-45deg);
+    opacity: 0;
+    animation: shooting 3.5s linear infinite;
+}
+
+.shooting-star::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    width: 160px;
+    height: 2px;
+    background: linear-gradient(to right, white, transparent);
+    transform: translateY(-50%);
+}
+
+.shooting-star:nth-child(2){top:-10%;right:10%;animation-delay:1.5s;}
+.shooting-star:nth-child(3){top:10%;right:30%;animation-delay:3s;}
+.shooting-star:nth-child(4){top:-25%;right:50%;animation-delay:4.5s;}
+.shooting-star:nth-child(5){top:-5%;right:65%;animation-delay:6s;}
+.shooting-star:nth-child(6){top:15%;right:80%;animation-delay:7.5s;}
+
+
+/* 제목 */
+h1 {
+    margin-top: 40px;
+    font-size: 34px;
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255,255,255,0.7);
+}
+
+/* 카드 영역 */
+#friend-list-container {
+    width: 380px;
+    height: 380px;
+
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(12px);
+
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 0 40px rgba(255,255,255,0.3);
+
+    padding: 10px 0;
+    margin-top: 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* 친구 개별 항목  */
 .friend-item {
     display: flex;
-    align-items: center; 
-    padding: 8px 15px; /* 위아래 12px -> 8px로 축소 */
-    border-bottom: 1px solid #f5f7f7;
-    transition: background 0.1s;
+    align-items: center;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    transition: background 0.2s;
     cursor: pointer;
 }
 
 .friend-item:hover {
-    background-color: #f0faff; /* 연한 하늘색 피드백 */
+    background-color: rgba(255,255,255,0.1);
 }
 
-/* 체크박스 - 크기 살짝 조절 */
+/* 체크박스 */
 input[name="friendUcodes"] {
     width: 16px;
     height: 16px;
-    margin-right: 12px;
+    margin-right: 14px;
+    accent-color: #61c3f4;
 }
 
-/* 프로필 이미지 - 45px -> 36px로 축소 */
+/* 프로필 아이콘 */
 .icon img {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 12px;
-    background: #f0f0f0;
-    border: 1px solid #eee;
+    margin-right: 14px;
+    border: 2px solid rgba(255,255,255,0.5);
+    background: #1f1f2e;
 }
 
-/* 정보 텍스트 영역 */
+/* 정보 영역 */
 .info {
     display: flex;
-    flex-direction: row; /* 가로로 배치해서 줄 높이 감소 */
-    align-items: baseline; /* 이름과 아이디 밑줄 맞춤 */
-    gap: 8px; /* 이름과 아이디 사이 간격 */
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
 }
 
 .fname {
     font-weight: 600;
-    font-size: 0.95rem; /* 폰트 살짝 축소 */
-    color: #333;
+    font-size: 0.95rem;
+    color: #ffffff;
 }
 
 .fid {
     font-size: 0.8rem;
-    color: #aaa;
+    color: rgba(255,255,255,0.6);
 }
 
-/* 버튼 - 너무 뚱뚱하지 않게 */
-button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #61c3f4;
+/*  그룹 생성 버튼  */
+#create-group-btn {
+    width: 380px;
+    padding: 12px;
+    margin-top: 20px;
+
+    background: linear-gradient(135deg, #3f4db8, #61c3f4);
     color: white;
+
     border: none;
-    border-radius: 6px;
+    border-radius: 12px;
+
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+
+    box-shadow: 0 0 20px rgba(97,195,244,0.5);
+    transition: 0.2s ease;
+}
+
+#create-group-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(97,195,244,0.8);
 }

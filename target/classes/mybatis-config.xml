@@ -6,15 +6,8 @@
 <configuration>
 
   <!-- 컬럼 매칭 편의성 세팅 -->
-  <settings>
+  	<settings>
   		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
-	
-  <!-- 매퍼 등록(다음 단계에서 파일 만들고 경로 맞출 예정) -->
-  <mappers>
-    <mapper resource="mapper/MemberMapper.xml"/>
-    <mapper resource="mapper/FriendsMapper.xml"/>
-    <mapper resource="mapper/ChatMapper.xml"/>
-  </mappers>
 
 </configuration>

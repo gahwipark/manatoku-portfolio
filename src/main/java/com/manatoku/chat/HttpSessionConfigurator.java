@@ -17,4 +17,9 @@ public class HttpSessionConfigurator extends ServerEndpointConfig.Configurator {
         // WebSocket 설정에 저장
         config.getUserProperties().put(HttpSession.class.getName(), httpSession);
     }
+    
+    @Override
+    public <T> T getEndpointInstance(Class<T> clazz) throws InstantiationException {
+        return SpringContext.getBean(clazz);
+    }
 }

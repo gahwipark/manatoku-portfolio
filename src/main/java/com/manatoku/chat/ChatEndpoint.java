@@ -4,101 +4,125 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 
-import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-
-import com.manatoku.dao.ChatMapper;
 import com.manatoku.model.ChatMessage;
-import com.manatoku.util.MyBatisUtil;
+import com.manatoku.model.MemberResponse;
+import com.manatoku.service.ChatService;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Set;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+/* js에서 연결 요청하기 위한 url '/chat'과 세션 정보를 가져오기 위한 configurator 객체 HttpSessionConfigurator을 선언 */
+/* Component 선언 이유는 스프링에서 객체 관리를 하게 설정하기 위함 */
+@Component
 @ServerEndpoint(value = "/chat", configurator = HttpSessionConfigurator.class)
 public class ChatEndpoint {
 
-    // roomId → 접속 세션들
-    private static Map<Integer, Set<Session>> roomSessions = new ConcurrentHashMap<>();
+    /* Service 의존성 주입 */
+	private final ChatService chatService;
+	public ChatEndpoint(ChatService chatService) {
+		this.chatService = chatService;
+	}
 
-    // 세션 → roomId (정리용)
-    private static Map<Session, Integer> sessionRoomMap = new ConcurrentHashMap<>();
+    /* Map 함수로 Integer로 roomId를 키값으로 웹소캣 Session 정보 보관 */
+	private static Map<Integer, Set<Session>> roomSessions = new ConcurrentHashMap<>();
 
-    @OnOpen
-    public void onOpen(Session session, EndpointConfig config) throws IOException {
+    /* 위와 반대로 Map 함수로 웹소캣 Session 정보를 키값으로 roomId 정보 보관 */
+	private static Map<Session, Integer> sessionRoomMap = new ConcurrentHashMap<>();
 
-        // 1️ HTTP 세션에서 로그인 유저 정보 가져오기
-        HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
-        Integer ucode = (Integer)httpSession.getAttribute("ucode");
-        String name = (String) httpSession.getAttribute("name");
+    // 채팅창=>캘린더 일정 : 날짜 패턴 (YYYY-MM-DD 또는 YYYY/MM/DD)
+    private static final Pattern DATE_PATTERN = Pattern.compile("(\\d{4})[-/](\\d{1,2})[-/](\\d{1,2})");
+    
+    /* 웹소캣 세션을 열 때 동작 */
+	@OnOpen
+	public void onOpen(Session session, EndpointConfig config) throws IOException {
+    	
+        /* 웹소캣은 세션 정보를 모르기 때문에 EndpointConfig 객체에 구성한 사용자 세션 정보를 가져온다 */
+    	HttpSession httpSession = (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         
-        session.getUserProperties().put("name", name);
-        session.getUserProperties().put("ucode", ucode);
+    	Integer ucode = null;
+    	String name = null;
+    	
+        /* 세션에서 사용자의 정보를 가져온다 */
+    	/* 사용자의 세션이 없을 경우 Member 객체를 채울 수 없기 때문에 session값이 null이라면 걸러준다 
+    	 * (*보통은 로그인 필터선에서 걸러져서 들어오긴 한다 2중 방어*) */
+        if(httpSession != null ) {
+        	MemberResponse member = (MemberResponse)httpSession.getAttribute("member"); // 세션 파라미터를 Member 객체로 변환
+        	
+        	/* Member 객체에서 유저코드와 이름 추출 */
+        	ucode = member.getUcode();
+        	name = member.getName();
+        }
         
-        // 로그인 안 되어 있으면 차단
+        /* ucode 정보가 잘못 들어왔을 경우 차단 */
         if (ucode == null) {
             session.close(new CloseReason(
                 CloseReason.CloseCodes.VIOLATED_POLICY, "로그인 필요"));
             return;
         }
+        
+        /* HttpSessionConfigurator 객체에 파라미터 저장 */
+        session.getUserProperties().put("name", name);
+        session.getUserProperties().put("ucode", ucode);
 
-        // 2️ URL 파라미터에서 roomId 가져오기
+        /* 세션에서 roomId 파라미터를 가져온다 */
         Integer roomId = Integer.parseInt(session.getRequestParameterMap().get("roomId").get(0));
 
-        // 3 DB에서 이 유저가 이 방 멤버인지 검증
-        try (SqlSession sql = MyBatisUtil.getFactory().openSession()) {
-            ChatMapper mapper = sql.getMapper(ChatMapper.class);
-            
-            if (mapper.isUserInRoom(ucode, roomId) != 1) {
+        /* 사용자가 room의 참가자인지 검증 */    
+            if (chatService.isUserInRoom(ucode, roomId) != 1) { // 사용자가 room의 참가자가 아닌경우
+            	/* 웹소캣 세션을 닫는다 */
                 session.close(new CloseReason(
                     CloseReason.CloseCodes.VIOLATED_POLICY, "방 접근 권한 없음"));
                 return;
             }
-		}
 
-        // 4️ roomId 기준으로 세션 등록
+        /* roomId를 키값으로 웹소캣 세션 정보를 Map에 맵핑 */
         roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(session);
         sessionRoomMap.put(session, roomId);
         session.getUserProperties().put("ucode", ucode);
-        System.out.println("유저 " + ucode + "가 방 " + roomId + "에 접속");
     }
     
+	/* 메세지가 입력되었을 경우의 동작 */
     @OnMessage
     public void onMessage(String content, Session session) throws IOException {
 
-        // 1) 이 세션이 어느 방인지, 누가 보냈는지 찾기
-        Integer roomId = sessionRoomMap.get(session);
-        Integer ucode  = (Integer)session.getUserProperties().get("ucode");
-        String name = (String) session.getUserProperties().get("name");
+        /* 사용자의 세션 정보를 가져온다 */
+        Integer roomId = sessionRoomMap.get(session); //세션을 키값으로 roomId를 가져오기
+        Integer ucode  = (Integer)session.getUserProperties().get("ucode"); //configurator 객체에서 ucode 파라미터를 가져오기
+        String name = (String) session.getUserProperties().get("name"); //configurator 객체에서 name 파라미터를 가져오기
 
-        // 방/유저 정보가 없으면 안전하게 끊기
+        /* 방 정보나 유저 정보가 존재하지 않는 경우 세션 종료 */
         if (roomId == null || ucode == null) {
             session.close(new CloseReason(
                 CloseReason.CloseCodes.VIOLATED_POLICY, "세션 정보 없음"));
             return;
         }
 
-        // 2) DB 저장 
-        try (SqlSession sql = MyBatisUtil.getFactory().openSession(true)) {
-            ChatMapper mapper = sql.getMapper(ChatMapper.class);
-            mapper.insertMessage(roomId, ucode, content);
-        } catch(Exception e) {
-        	e.printStackTrace();
-        	return;
-        }
+        /* 사용자가 보낸 메세지 로그를 DB에 저장 */
+        chatService.insertMessage(roomId, ucode, content);
 
         // 3) 같은 방 세션들에게 브로드캐스트
         Set<Session> sessions = roomSessions.get(roomId);
         if (sessions == null) return;
+
+        // 채팅창=>캘린더 일정 :  날짜 감지
+        String detectedDate = extractDate(content);
 
         ChatMessage msg = new ChatMessage();
         msg.setRoomId(roomId);
         msg.setSenderUcode(ucode);
         msg.setSenderName(name);
         msg.setContent(content);
+        if (detectedDate != null) {
+            msg.setDetectedDate(detectedDate);
+        }
+        else { msg.setDetectedDate(""); }
         
         String jsonPayload = new Gson().toJson(msg);
         
@@ -112,8 +136,18 @@ public class ChatEndpoint {
             }
         }
     }
-    
-	@OnClose
+
+    // 채팅창=>캘린더 일정 :  날짜 추출 함수
+    private String extractDate(String text) {
+        Matcher matcher = DATE_PATTERN.matcher(text);
+        if (matcher.find()) {
+            return matcher.group(0).replace("/", "-");
+        }
+        return null;
+    }
+
+
+    @OnClose
 	public void onClose(Session session, CloseReason reason) {
 
     	Integer roomId = sessionRoomMap.remove(session);

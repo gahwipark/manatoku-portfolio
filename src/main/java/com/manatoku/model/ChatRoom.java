@@ -1,5 +1,8 @@
 package com.manatoku.model;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("ChatRoom")
 public class ChatRoom {
 	private int roomId;
 	private String roomType;

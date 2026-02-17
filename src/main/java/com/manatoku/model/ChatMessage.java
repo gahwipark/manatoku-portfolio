@@ -1,5 +1,8 @@
 package com.manatoku.model;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("ChatMessage")
 public class ChatMessage {
 	private int msgId;
 	private int roomId;
@@ -8,7 +11,14 @@ public class ChatMessage {
 	private String msgType;
 	private String createdAt;
 	private String senderName;
-	
+	private String detectedDate;
+
+	public String getDetectedDate() {
+		return detectedDate;
+	}
+	public void setDetectedDate(String detectedDate) {
+		this.detectedDate = detectedDate;
+	}
 	public String getSenderName() {
 		return senderName;
 	}

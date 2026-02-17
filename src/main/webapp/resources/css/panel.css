@@ -1,82 +1,84 @@
 
 #panel{
-  flex: 1;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+    min-height: 470px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .panel-title{
-  padding: 10px 12px;
-  font-weight: 700;
-  border-bottom: 1px solid #e5e7eb;
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 12px;
+    padding: 10px 12px;
+    font-weight: 700;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 12px;
 }
 
 .panel-title button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 10px;
-  font-size: 12px;
-  text-decoration: none;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  color: #111827;
-  background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 12px;
+    text-decoration: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    color: #111827;
+    background: #fff;
 }
 
 .panel-list{
-  flex: 1;
-  min-height: 55px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  overflow-y: auto;
+    flex: 1;
+    min-height: 55px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* 친구/채팅방 버튼 */
 .panel-list .chat-btn{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: #fff;
-  cursor: pointer;
-  text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
 }
 
 .panel-list .chat-btn:hover{
-  background: #f9fafb;
+    background: #f9fafb;
 }
 
 .panel-list .chat-btn .icon img{
-  width: 28px;
-  height: 28px;
-  display: block;
+    width: 28px;
+    height: 28px;
+    display: block;
 }
 
 .panel-list .chat-btn .fname{
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .panel-list .chat-btn .fid{
-  margin-left: auto;
-  color: #6b7280;
-  font-size: 12px;
+    margin-left: auto;
+    color: #6b7280;
+    font-size: 12px;
 }
 
 /* 갤럭시 테마 적용 시 패널 스타일 */
 /* 1. 패널 전체 배경 전환 (가장 바깥쪽) */
 body.galaxy-theme #panel {
-    background: rgba(15, 52, 96, 0.5) !important;
+    background: linear-gradient(135deg, #b399d1 0%, #e8f4fc 100%) !important;
     backdrop-filter: blur(12px);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -102,7 +104,7 @@ body.galaxy-theme .chat-btn {
 
 /* 4. 친구/채팅방 버튼들 전환 */
 body.galaxy-theme .panel-list .chat-btn {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(120, 120, 120, 0.3) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: #ffffff !important;
 }

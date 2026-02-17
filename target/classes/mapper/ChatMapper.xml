@@ -3,7 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.manatoku.dao.ChatMapper">
+<mapper namespace="com.manatoku.mapper.ChatMapper">
+
 	<!-- SELECT -->
 	<select id="findDirectRoomId" resultType="Integer">
 		SELECT room_id
@@ -22,7 +23,7 @@
 		WHERE rownum = 1
 	</select>
 
-	<select id="findRoom" resultType="com.manatoku.model.ChatRoom">
+	<select id="findRoom" resultType="ChatRoom">
 		SELECT
 		cr.room_id,cr.title,cr.create_at
 		FROM chat_room cr
@@ -36,7 +37,7 @@
 		DESC
 	</select>
 
-	<select id="selectRecentMessages" resultType="com.manatoku.model.ChatMessage">
+	<select id="selectRecentMessages" resultType="ChatMessage">
 		SELECT
 		t.msg_id,
 		t.room_id,
@@ -55,7 +56,7 @@
 		ORDER BY t.created_at ASC
 	</select>
 
-	<select id="selectUserSummary" resultType="com.manatoku.model.Friends">
+	<select id="selectUserSummary" resultType="Friends">
 		SELECT ucode, id,
 		name, icon, birth, email, phone
 		FROM member
@@ -70,14 +71,49 @@
 		AND ucode = #{ucode}
 	</select>
 
-	<!-- UPDATE -->
+	<!--사용자의 그룹 ROLE 조회-->
+	<select id="selectUserRole" resultType="String">
+		SELECT role
+		FROM chat_room_member
+		WHERE room_id = #{roomId}
+		AND ucode = #{ucode}
+	</select>
+	<!-- 사용자 그룹의 인원수 조회 -->
+	<select id="groupMemberCount" resultType="int">
+		SELECT count(*)
+		FROM chat_room_member
+		WHERE room_id = #{roomId}
+	</select>
+	<!-- 그룹 멤버 리스트 조회 -->
+	<select id="getGroupMemList" resultType="ChatRoomMember">
+	SELECT cm.ucode,m.id,m.name,cm.role
+	FROM chat_room_member cm
+	JOIN member m
+	ON cm.ucode = m.ucode
+	WHERE cm.room_id = #{roomId}
 
+	</select>
+	<!-- UPDATE -->
+	<!-- 그룹명 변경-->
 	<update id="setGroupTitle">
 		UPDATE chat_room
 		SET title=#{title}
 		WHERE
 		room_id=#{roomId}
 	</update>
+
+	<!-- DELETE -->
+	<!-- 그룹 나가기 -->
+	<delete id="exitGroup">
+		DELETE FROM chat_room_member
+		WHERE room_id = #{roomId}
+		AND ucode = #{ucode}
+	</delete>
+	<!-- 그룹 삭제 -->
+	<delete id="deleteGroup">
+		DELETE FROM chat_room
+		WHERE room_id = #{roomId}
+	</delete>
 
 	<!-- INSERT -->
 	<insert id="insertChatRoomDirect">
@@ -107,5 +143,7 @@
 		VALUES
 		(#{roomId},#{ucode},#{content})
 	</insert>
+
+
 
 </mapper>

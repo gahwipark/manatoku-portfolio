@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center; 
     gap: 10px;
+    color: #ffffff;
 
     border-bottom: 1px solid rgba(255,255,255,0.25);
 }
