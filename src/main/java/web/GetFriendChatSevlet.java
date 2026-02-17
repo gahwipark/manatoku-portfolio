@@ -14,10 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.ibatis.session.SqlSession;
 
 import com.google.gson.Gson;
+import model.Friends;
 
 import dao.ChatMapper;
 import model.ChatMessage;
-import model.Friends;
 import util.MyBatisUtil;
 
 @WebServlet("/chat/friends")

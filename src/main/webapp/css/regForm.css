@@ -1,4 +1,4 @@
-/* 전체 배경 + 가운데 정렬 */
+@charset "UTF-8";
 body {
   margin: 0;
   min-height: 100vh;
@@ -11,7 +11,6 @@ body {
   color: #222;
 }
 
-/* 카드 컨테이너 */
 .container {
   width: min(520px, 92vw);
   background: #fff;
@@ -20,11 +19,10 @@ body {
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
-/* 테이블 레이아웃 정리 */
 .container table {
   width: 100%;
-  border-collapse: separate;   /* 간격 주기 위해 */
-  border-spacing: 0 12px;      /* 행 간격 */
+  border-collapse: separate;
+  border-spacing: 0 12px;
 }
 
 .container td {
@@ -32,7 +30,7 @@ body {
   vertical-align: middle;
 }
 
-/* 왼쪽 라벨 */
+
 .container td:first-child {
   width: 120px;
   text-align: left;
@@ -40,7 +38,7 @@ body {
   color: #444;
 }
 
-/* input/select 공통 느낌 */
+
 .input-box, .input-box2, select {
   border: 1px solid #d9dde6;
   border-radius: 10px;
@@ -51,45 +49,44 @@ body {
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* 기존 너비/높이 재정의 */
+
 .input-box {
   width: 100%;
-  height: auto; /* 고정 높이 제거 */
+  height: auto;
   box-sizing: border-box;
 }
 
 .input-box2 {
-  width: 70px;     /* 50px는 너무 작아서 조금 키움 */
+  width: 70px;  
   height: auto;
   text-align: center;
   box-sizing: border-box;
 }
 
-/* select 크기 */
+
 select {
-  font-size: 14px;  /* 기존 18px -> 입력들과 톤 맞춤 */
+  font-size: 14px; 
   padding: 10px 10px;
 }
 
-/* 포커스 효과 */
+
 .input-box:focus, .input-box2:focus, select:focus {
   border-color: #4c7dff;
   box-shadow: 0 0 0 4px rgba(76,125,255,0.15);
 }
 
-/* 비밀번호 2줄(현재는 td colspan 때문에 어색할 수 있어 중앙 정렬 보정) */
-.container tr:nth-child(5) td,  /* Password 첫 줄 */
-.container tr:nth-child(6) td { /* Password 두 번째 줄 */
+
+.container tr:nth-child(5) td, 
+.container tr:nth-child(6) td {
   padding-top: 0;
   padding-bottom: 0;
 }
 
-/* 버튼 영역 */
+
 .container tr:last-child td {
   padding-top: 10px;
 }
 
-/* Sign in 버튼을 “진짜 버튼”처럼 */
 .container input[type="button"] {
   width: 100%;
   border: none;
@@ -112,7 +109,6 @@ select {
   transform: scale(0.99);
 }
 
-/* 작은 힌트: 휴대폰 입력칸 간격 */
 .container td input.input-box2 + input.input-box2 {
   margin-left: 6px;
 }

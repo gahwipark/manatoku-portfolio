@@ -3,12 +3,8 @@
 session.removeAttribute("GAME_ID");
 session.removeAttribute("LAST_END_WORD");
 %>
-<!DOCTYPE html>
-<html>
-<head>
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/chatbot.css"> --%>
-</head>
-<body>
+
         <div id="mainLayout" class="main-layout">
                 <div id="gameBoard" class="game-board">
                         <div id="characterArea" class="character-area">
@@ -49,5 +45,3 @@ session.removeAttribute("LAST_END_WORD");
                 <div id="tooltipContent" class="meaning-dp-div-tooltip"></div>
         </div>
 <%--         <script src="${pageContext.request.contextPath}/js/chatbot.js"></script> --%>
-</body>
-</html>

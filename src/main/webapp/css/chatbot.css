@@ -1,16 +1,14 @@
+@charset "UTF-8";
 /* 기본 초기화 */
-* {
-        box-sizing: border-box;
-}
 
 /* 전체 크기를 규격화하기 */
-html, body {
+/* html, body {
         height: 100%;
         margin: 0;
         display: flex;
-/*         justify-content: center;
-        align-items: center; */
-}
+        justify-content: center;
+        align-items: center;
+} */
 
 /* 기본이 되는 div 설정 */
 .main-layout {

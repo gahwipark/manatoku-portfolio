@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <div class="tabs">
 <div class="nav">
-<button onclick="showPanel('siritoriPanel')" id="siritoriBtn">Chat Bot</button>
-<button id="friendsListBtn">Friends List</button>
-<button id="roomsListBtn">Chat List</button>
-<button onclick="showPanel('callendarPanel')" id="calendarBtn">Callendar</button>
+<button onclick="showPanel('siritoriPanel')" id="siritoriBtn">しりとりボット</button>
+<button id="friendsListBtn">フレンドリスト</button>
+<button id="roomsListBtn">グループリスト</button>
+<button onclick="showPanel('calendarPanel')" id="calendarBtn">カレンダー</button>
 </div>
 </div>

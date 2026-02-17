@@ -1,24 +1,32 @@
 package model;
 
 public class ChatMessage {
-	private String msgId;
-	private String roomId;
+	private int msgId;
+	private int roomId;
 	private int senderUcode;
 	private String content;
 	private String msgType;
 	private String createdAt;
+	private String senderName;
+	
+	public String getSenderName() {
+		return senderName;
+	}
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
 	private boolean mine = false;
 	
-	public String getMsgId() {
+	public int getMsgId() {
 		return msgId;
 	}
-	public void setMsgId(String msgId) {
+	public void setMsgId(int msgId) {
 		this.msgId = msgId;
 	}
-	public String getRoomId() {
+	public int getRoomId() {
 		return roomId;
 	}
-	public void setRoomId(String roomId) {
+	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
 	public int getSenderUcode() {

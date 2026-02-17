@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import model.Friends;
+import model.Member;
 
 public interface FriendsMapper {
 	
-	List<Friends> getFriendsList(@Param("ucode") Integer ucode);
+	List<Member> getFriendsList(@Param("ucode") Integer ucode);
 	
 }

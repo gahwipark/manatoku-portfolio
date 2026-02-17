@@ -3,6 +3,6 @@
         <Resource name="jdbc/myOracle" auth="Container"
                 type="javax.sql.DataSource"
                 driverClassName="oracle.jdbc.driver.OracleDriver"
-                url="jdbc:oracle:thin:@localhost:1521:orcl" username="scott"
-                password="tiger" maxTotal="20" maxIdle="10" maxWaitMillis="-1" />
+                url="jdbc:oracle:thin:@gidb.duckdns.org:1521:xe" username="manatoku"
+                password="manamana123" maxTotal="20" maxIdle="10" maxWaitMillis="-1" />
 </Context>

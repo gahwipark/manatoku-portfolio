@@ -15,7 +15,7 @@ function initCalendar() {
 
    calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
- 	locale: 'jp',
+         locale: 'ja',
         
         // 🔥 [수정] 높이를 특정하지 않고 내부 비율에 맡김
         height: 'auto',
@@ -131,6 +131,8 @@ eventDataTransform: function(event) {
             $("#saveEvent").data("mode", "insert").data("id", "");
             $("#deleteEvent").hide();
 
+			$("#modalTitle").text("📅 予定の登録"); 
+
             if (eventModal) eventModal.show();
             calendar.unselect();
         },
@@ -157,7 +159,8 @@ eventDataTransform: function(event) {
             var eventId = info.event.id;
             $("#saveEvent").data("mode", "update").data("id", eventId);
             $("#deleteEvent").data("id", eventId).show();
-
+			
+			$("#modalTitle").text("📅 予定の修正");
             if (eventModal) eventModal.show();
         }
     });
@@ -173,8 +176,8 @@ $(document).on('click', '#saveEvent', function() {
     var mode = $(this).data("mode");
     var eventData = {
         command: mode,
-		ucode : `${ucode}`,
-		id: $(this).data("id") || "",
+                ucode : `${ucode}`,
+                id: $(this).data("id") || "",
         title: $('#eventTitle').val(),
         content: $('#eventContent').val(),
         start: $('#eventStart').val(),

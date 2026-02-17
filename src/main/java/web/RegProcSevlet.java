@@ -41,7 +41,7 @@ public class RegProcSevlet extends HttpServlet {
             if(resId > 0) { // id 중복확인 count(*) 쿼리문 실행 결과값이 0보다 클때
             	m.setPass("");
             	request.setAttribute("member", m);
-    			request.setAttribute("error", "이미 사용중인 아이디입니다.");
+    			request.setAttribute("error", "このIDは登録できません。");
     			request.getRequestDispatcher("/user/regForm.jsp").forward(request, response);
     			
     			return;
@@ -52,7 +52,7 @@ public class RegProcSevlet extends HttpServlet {
             if(resEmail > 0) { // email 중복확인 count(*) 쿼리문 실행 결과값이 0보다 클때
             	m.setPass("");
     			request.setAttribute("member", m);
-    			request.setAttribute("error", "이미 사용중인 이메일입니다.");
+    			request.setAttribute("error", "このメールアドレスは登録できません。");
     			request.getRequestDispatcher("/user/regForm.jsp").forward(request, response);
     			
     			return;
@@ -60,13 +60,14 @@ public class RegProcSevlet extends HttpServlet {
             
             mapper.insertMember(m);
             session.commit();
-            request.getSession().setAttribute("flashMsg", "회원가입이 완료되었습니다.");
+            request.getSession().setAttribute("flashMsg", "登録が完了しました。");
             response.sendRedirect(request.getContextPath() + "/user/login.jsp");
             
 		}catch (Exception e) {
+			e.printStackTrace();
 			m.setPass("");
             request.setAttribute("member", m);
-            request.setAttribute("error", "계정 생성에 실패했습니다.");
+            request.setAttribute("error", "アカウントの作成に失敗しました。");
             request.getRequestDispatcher("/user/regForm.jsp").forward(request, response);
             return;
         }

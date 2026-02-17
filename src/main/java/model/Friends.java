@@ -2,41 +2,41 @@ package model;
 
 public class Friends {
 	
-	private int ucode;
-	private int friendUcode;
-	private String friendId;
-	private String friendName;
-	private String friendStat;
+	private int fcode;
+	private int sender;
+	private int reciver;
+	private String status;
+	private String regdate;
 	
-	public String getFriendStat() {
-		return friendStat;
+	public int getFcode() {
+		return fcode;
 	}
-	public void setFriendStat(String friendStat) {
-		this.friendStat = friendStat;
+	public void setFcode(int fcode) {
+		this.fcode = fcode;
 	}
-	public int getUcode() {
-		return ucode;
+	public int getSender() {
+		return sender;
 	}
-	public void setUcode(int ucode) {
-		this.ucode = ucode;
+	public void setSender(int sender) {
+		this.sender = sender;
 	}
-	public int getFriendUcode() {
-		return friendUcode;
+	public int getReciver() {
+		return reciver;
 	}
-	public void setFriendUcode(int friendUcode) {
-		this.friendUcode = friendUcode;
+	public void setReciver(int reciver) {
+		this.reciver = reciver;
 	}
-	public String getFriendId() {
-		return friendId;
+	public String getStatus() {
+		return status;
 	}
-	public void setFriendId(String friendId) {
-		this.friendId = friendId;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public String getFriendName() {
-		return friendName;
+	public String getRegdate() {
+		return regdate;
 	}
-	public void setFriendName(String friendName) {
-		this.friendName = friendName;
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
 	}
 	
 	

@@ -13,10 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 
 import com.google.gson.Gson;
-
+import model.Member;
 import dao.FriendsMapper;
-import dao.MemberMapper;
-import model.Friends;
 import util.MyBatisUtil;
 
 @WebServlet("/api/friends")
@@ -43,7 +41,7 @@ public class GetFriendListServlet extends HttpServlet {
 		try (SqlSession sql = MyBatisUtil.getFactory().openSession()) {
             FriendsMapper mapper = sql.getMapper(FriendsMapper.class);
             
-            List<Friends> list = mapper.getFriendsList(ucode);
+            List<Member> list = mapper.getFriendsList(ucode);
             
     		response.setContentType("application/json; charset=utf-8");
     	    response.getWriter().write(gson.toJson(list));

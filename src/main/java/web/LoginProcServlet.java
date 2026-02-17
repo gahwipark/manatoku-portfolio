@@ -29,7 +29,7 @@ public class LoginProcServlet extends HttpServlet {
             
             if(res<1) {
             	request.setAttribute("id", id);
-            	request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            	request.setAttribute("error", "IDが正しくありません。");
     			request.getRequestDispatcher("/user/login.jsp").forward(request, response);
     			
     			return;
@@ -41,7 +41,7 @@ public class LoginProcServlet extends HttpServlet {
             
             if(!pw.equals(userPw)) {
             	request.setAttribute("id", id);
-            	request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+            	request.setAttribute("error", "パスワードが正しくありません。");
     			request.getRequestDispatcher("/user/login.jsp").forward(request, response);
             	
             	return;
@@ -50,6 +50,7 @@ public class LoginProcServlet extends HttpServlet {
             request.getSession().setAttribute("ucode", m.getUcode());
             request.getSession().setAttribute("loginId", id);
             request.getSession().setAttribute("name", m.getName());
+            request.getSession().setAttribute("icon", m.getIcon());
             
             response.sendRedirect(request.getContextPath() + "/main/mainpage.jsp");
             
@@ -57,7 +58,7 @@ public class LoginProcServlet extends HttpServlet {
             
 		}catch(Exception e) {
 			request.setAttribute("id", id);
-        	request.setAttribute("error", "아이디 또는 비밀번호가 잘못되었습니다.");
+        	request.setAttribute("error", "ログインが失敗しました。");
 			request.getRequestDispatcher("/user/login.jsp").forward(request, response);
         	
         	return;
