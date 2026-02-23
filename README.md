@@ -1,1 +1,2 @@
 # manatoku-portfolio
+ServletとSpringMVCプログラミングをbrancheで分離しました。
